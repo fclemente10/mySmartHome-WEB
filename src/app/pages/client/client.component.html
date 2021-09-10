@@ -1,0 +1,207 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path4.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                        <span *ngIf="submit">
+                         <button name="btnVolver" type="submit" class="btn btn-simple btn-warning" (click)="btnCancel()">
+                            <i class="tim-icons icon-simple-remove"> </i> Cancelar
+                        </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row top30">
+                    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                        <div class="card card-coin card-plain">
+                            <div class="card-header">
+                                <img class="img-center img-fluid rounded-circle" src="assets/img/users_02.png"/>
+                            </div>
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Clientes">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="cliente-table">
+                                            <thead class="text-danger">
+                                                <tr class="text-center">
+                                                    <th>id</th>
+                                                    <th>Nombre</th>
+                                                    <th>Apellido</th>
+                                                    <th>e-mail</th>
+                                                    <th>Privilegios</th>
+                                                    <th>Editar</th>
+                                                    <th>Detalle</th>
+                                                    <th>Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let usuario of arrayUser">
+                                                <td> {{ usuario.id }} </td>
+                                                <td> {{ usuario.nombre }} </td>
+                                                <td> {{ usuario.apellido }} </td>
+                                                <td> {{ usuario.email }} </td>
+                                                <td> {{ usuario.tipo }} </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditar(usuario.email)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-simple btn-warning btn-sm" (click)="btnDetalle(usuario.email)">
+                                                        Detalles
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrar(usuario.email)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <button *ngIf="!submit" type="submit" class="btn btn-success btn-lg btn-block" (click)="btnAnadirUsu()">
+                        Añadir nuevo Usuario
+                    </button>
+                </div>
+                <hr>
+                <section class="section">
+                    <div class="row justify-content-center" *ngIf="submit" >
+                        <div class="col-md-8">
+                            <span *ngIf="creat">
+                                <div class="card card-plain">
+                                    <div class="card-header">
+                                        <h1 class="profile-title text-left">Añadir usuario</h1>
+                                        <h5 class="text-on-back">Añadir</h5>
+                                    </div>
+                                </div>
+                            </span>
+                            <span *ngIf="!creat" >
+                                <!--img src="assets/img/edit.gif" width="150" height="120" /-->
+                                <div class="card card-plain">
+                                    <div class="card-header">
+                                        <h1 class="profile-title text-left">Editar usuario</h1>
+                                        <h5 class="text-on-back">Editar</h5>
+                                    </div>
+                                </div>
+                            </span>
+
+                            <p align="center" style="font-size: small; color: crimson"> Todos los campos con "*" son obligatórios</p>
+
+                        <hr>
+                        <form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                            <div formGroupName="userData">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="nombre">Nombre</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="nombre"
+                                                   formControlName="nombre"
+                                                   placeholder="Añadir nombre"
+                                                   [(ngModel)]="usuario.nombre">
+                                            <span *ngIf="!formulario.get('userData.nombre').valid && formulario.get('userData.nombre').touched"
+                                                  class="help-block" style="color: crimson">Necesario nombre valido!</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="nombre">Apellido*</label>
+                                            <input  class="form-control"
+                                                    type="text"
+                                                    id="apellido"
+                                                    formControlName="apellido"
+                                                    placeholder="Añadir Apellido"
+                                                    [(ngModel)]="usuario.apellido">
+                                            <span *ngIf="!formulario.get('userData.apellido').valid && formulario.get('userData.apellido').touched"
+                                                  class="help-block" style="color: crimson">Necesario apellido valido!</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="email">e-mail*</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="email"
+                                                   formControlName="email"
+                                                   placeholder="Añada un correo electronico"
+                                                   [(ngModel)]="usuario.email">
+                                            <span *ngIf="!formulario.get('userData.email').valid && formulario.get('userData.email').touched"
+                                                  class="help-block" style="color: crimson">Necesario email valido!</span>
+                                        </div>
+                                    </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="col align-self-center form-group" style="text-align: center">
+                                                    <label style="color: #ffffff" for="tipo"> Perfil del Usuario* </label>
+                                                    <select id="tipo" class="form-control" formControlName="tipo" [(ngModel)]="usuario.tipo">
+                                                        <!--option *ngFor="let rol of usuario.tipo" [ngValue]="rol">{{rol.value}}</option-->
+                                                        <option style="color: darkslategray; font-weight: bold" value="Admin">Admin</option>
+                                                        <option style="color: darkslategray; font-weight: bold" value="Usuario" [ngValue]="usuario.tipo">Usuario</option>
+                                                    </select>
+                                                    <span *ngIf="!formulario.get('userData.tipo').valid && formulario.get('userData.tipo').touched"
+                                                          class="help-block" style="color: crimson">Elija un Perfil de Usuario</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label style="color: #ffffff" for="email">Contraseña*</label>
+                                        <input class="form-control"
+                                               type="password"
+                                               id="contrasena"
+                                               formControlName="contrasena"
+                                               placeholder="Insertar una contraseña"
+                                               [(ngModel)]="usuario.contrasena">
+                                        <span *ngIf="!formulario.get('userData.contrasena').valid && formulario.get('userData.contrasena').touched"
+                                              class="help-block" style="color: crimson">minimo de 6 caracteres</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="color: #ffffff" for="email">Repita la contraseña*</label>
+                                        <input class="form-control"
+                                               type="password"
+                                               id="checkContrasena"
+                                               formControlName="checkContrasena"
+                                               placeholder="Repite la contraseña"
+                                               [(ngModel)]="checkContrasena">
+                                        <span *ngIf="!formulario.get('userData.checkContrasena').valid && formulario.get('userData.checkContrasena').touched"
+                                              class="help-block" style="color: crimson">Las contraseñas no son iguales</span>
+                                    </div>
+                                </div>
+                                <p></p>
+
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-md-6 text-center">
+                                            <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">Grabar datos</button>
+                                            <span *ngIf="!formulario.valid && formulario.touched"
+                                                  class="help-block">Datos del Formulario NO Validos!</span>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-warning btn-block" (click)="btnCancel()">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </form>
+                    </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </section>
+</div>
+

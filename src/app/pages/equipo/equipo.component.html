@@ -1,0 +1,222 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path4.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-sm-1">
+                            <h4>Id: <span style="color: #d92161"> {{infoEquipo.id}}</span> </h4>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4> Nombre Equipo: <span style="color: #d92161">{{infoEquipo.nombreEquipo}}</span> </h4>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4> Descripción: <span style="color: #d92161">{{infoEquipo.descripcion}}</span> </h4>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4> Cliente: <span style="color: #d92161">{{infoEquipo.emailCliente}}</span> </h4>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4> Ultima Comunicación: <span style="color: #d92161">{{infoEquipo.lastConn}}</span> </h4>
+                        </div>
+                    </div>
+                </div>
+                <p></p>
+                <div class="row top30">
+                    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                        <div class="card card-coin card-plain">
+                            <div class="card-header">
+                                <img class="img-center img-fluid rounded-circle" src="assets/img/arduino_02.png"/>
+                            </div>
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Equipo">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="equipo-table">
+                                            <thead class="text-danger">
+                                                <tr class="text-center">
+                                                    <th>id</th>
+                                                    <th>Numero Serial</th>
+                                                    <th>Estado</th>
+                                                    <th>Accion</th>
+                                                    <th>Hora Inicio</th>
+                                                    <th>Hora Final</th>
+                                                    <th>Editar</th>
+                                                    <th>Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            <tr class="text-center" *ngFor="let device of arduinoArray">
+                                                <td> {{ device.id }} </td>
+                                                <td> {{ device.serialNumber }} </td>
+                                                <td>
+                                                    <button *ngIf="device.onoff==='1' " class="btn btn-simple btn-success btn-sm" type="submit" (click)="onSubmitON(device.serialNumber)" >ON</button>
+                                                    <button *ngIf="device.onoff==='0' " class="btn btn-simple btn-danger btn-sm" type="submit" (click)="onSubmitOFF(device.serialNumber)" >OFF</button>
+                                                </td>
+                                                <td> {{ device.accion }} </td>
+                                                <td> {{ device.horaInicio }} </td>
+                                                <td> {{ device.horaFinal }} </td>
+                                                <td>
+                                                    <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditar(device.serialNumber)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrar(device.serialNumber)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <section class="section">
+                    <div class="row justify-content-center" *ngIf="submit" >
+                        <div class="col-md-8">
+                            <div class="card card-plain">
+                                <div class="card-header">
+                                    <h1 class="profile-title text-left">Editar equipo</h1>
+                                    <h5 class="text-on-back">Editar</h5>
+                                </div>
+                            </div>
+                            <form [formGroup]="formulario" (ngSubmit)="OnSubmitEdit()" #f=ngForm>
+                                <div formGroupName="arduinoData">
+                                    <div class="form-row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="id">Id</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="id"
+                                                       formControlName="id"
+                                                       placeholder="Id es automático"
+                                                       [(ngModel)]="arduino.id"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('arduinoData.id').valid && formulario.get('arduinoData.id').touched"
+                                                      class="help-block" style="color: crimson">Id debe de ser automatico</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="serialNumber">Numero Serial</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="serialNumber"
+                                                       formControlName="serialNumber"
+                                                       placeholder="Numbero Serial"
+                                                       [(ngModel)]="arduino.serialNumber"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('arduinoData.serialNumber').valid && formulario.get('arduinoData.serialNumber').touched"
+                                                      class="help-block" style="color: crimson">Numero Serial Deberá ser Automatico</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="onoff">ON u OFF</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="onoff"
+                                                       formControlName="onoff"
+                                                       placeholder="On u Off"
+                                                       [(ngModel)]="arduino.onoff"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('arduinoData.onoff').valid && formulario.get('arduinoData.onoff').touched"
+                                                      class="help-block" style="color: crimson">Numero Serial Deberá ser Automatico</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="accion">Selecione el modo de trabajo del equipo</label>
+                                                <select class="form-control"
+                                                        id="accion"
+                                                        formControlName="accion"
+                                                        placeholder="Selecione el modo de trabajo"
+                                                        [(ngModel)]="arduino.accion">
+                                                    <option style="color: darkslategray; font-weight: bold" value="On y Off">ON y OFF</option>
+                                                    <option style="color: #7aff0f; font-weight: bold" value="Permitido">Permitido Enchufar</option>
+                                                    <option style="color: #ff0f0f; font-weight: bold" value="Prohibido">Prohibido Enchufar</option>
+                                                    <option style="color: darkslategray; font-weight: bold" value="Por Hora">Enchufar a cada (solamente hora Inicial necesaria)</option>
+                                                    <option style="color: darkslategray; font-weight: bold" value="Max. Hora">Cantidad máxima de Horas (solamente hora Inicial necesaria)</option>
+                                                </select>
+                                                <span *ngIf="!formulario.get('arduinoData.accion').valid && formulario.get('arduinoData.accion').touched"
+                                                      class="help-block" style="color: crimson">Necesario elegir una accion!</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 align-self-start">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="horaInicio">Hora Inicial o a cada hora</label>
+                                                <input class="form-control"
+                                                       type="time"
+                                                       id="horaInicio"
+                                                       formControlName="horaInicio"
+                                                       value="00:00"
+                                                       min="00:00"
+                                                       max="24:00"
+                                                       [(ngModel)]="arduino.horaInicio">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 align-self-end">
+                                            <div class="form-group">
+                                                <label style="color: #ffffff" for="horaFinal">Hora Final</label>
+                                                <input class="form-control"
+                                                       type="time"
+                                                       id="horaFinal"
+                                                       formControlName="horaFinal"
+                                                       value="00:00"
+                                                       min="00:00"
+                                                       max="24:00"
+                                                       [(ngModel)]="arduino.horaFinal">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <p></p>
+                                        <div class="col-md-4 text-center">
+                                            <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">Grabar datos</button>
+                                            <span *ngIf="!formulario.valid && formulario.touched"
+                                                  class="help-block">Datos del Formulario NO Validos!</span>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <button type="submit" class="btn btn-warning btn-block" (click)="reload()">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section *ngIf="!submit" class="section">
+                    <img class="path" src="assets/img/path2.png" />
+                    <div class="chartjs-container">
+                        <canvas baseChart
+                                [datasets]="lineChartData"
+                                [labels]="lineChartLabels"
+                                [options]="lineChartOptions"
+                                [colors]="lineChartColors"
+                                [legend]="lineChartLegend"
+                                [chartType]="lineChartType"
+                                [plugins]="lineChartPlugins"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </section>
+</div>

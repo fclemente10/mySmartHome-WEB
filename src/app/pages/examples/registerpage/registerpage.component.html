@@ -1,0 +1,185 @@
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-header-image"></div>
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
+            <div class="square square-7" id="square7"></div>
+            <div class="square square-8" id="square8"></div>
+            <div class="card card-register">
+              <div class="card-header">
+                <img alt="Card image" class="card-img" src="assets/img/square1-red.png"/>
+                <h5 class="card-title">Registro</h5>
+              </div>
+              <div class="card-body">
+                <form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                  <div formGroupName="userData">
+                    <div class="form-row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label style="color: #ffffff" for="nombre">Nombre</label>
+                          <input class="form-control"
+                                 type="text"
+                                 id="nombre"
+                                 formControlName="nombre"
+                                 placeholder="Añadir nombre"
+                                 [(ngModel)]="usuario.nombre">
+                          <span *ngIf="!formulario.get('userData.nombre').valid && formulario.get('userData.nombre').touched"
+                                class="help-block" style="color: crimson">Necesario nombre valido!</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label style="color: #ffffff" for="nombre">Apellido*</label>
+                          <input  class="form-control"
+                                  type="text"
+                                  id="apellido"
+                                  formControlName="apellido"
+                                  placeholder="Añadir Apellido"
+                                  [(ngModel)]="usuario.apellido">
+                          <span *ngIf="!formulario.get('userData.apellido').valid && formulario.get('userData.apellido').touched"
+                                class="help-block" style="color: crimson">Necesario apellido valido!</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label style="color: #ffffff" for="email">e-mail*</label>
+                      <input class="form-control"
+                             type="text"
+                             id="email"
+                             formControlName="email"
+                             placeholder="Añada un correo electronico"
+                             [(ngModel)]="usuario.email">
+                      <span *ngIf="!formulario.get('userData.email').valid && formulario.get('userData.email').touched"
+                            class="help-block" style="color: crimson">Necesario email valido!</span>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-6">
+                        <label style="color: #ffffff" for="email">Contraseña*</label>
+                        <input class="form-control"
+                               type="password"
+                               id="contrasena"
+                               formControlName="contrasena"
+                               placeholder="Insertar una contraseña"
+                               [(ngModel)]="usuario.contrasena">
+                        <span *ngIf="!formulario.get('userData.contrasena').valid && formulario.get('userData.contrasena').touched"
+                              class="help-block" style="color: crimson">minimo de 6 caracteres</span>
+                      </div>
+                      <div class="col-md-6">
+                        <label style="color: #ffffff" for="checkContrasena">Repita la contraseña*</label>
+                        <input class="form-control"
+                               type="password"
+                               id="checkContrasena"
+                               formControlName="checkContrasena"
+                               placeholder="Repite la contraseña"
+                               [(ngModel)]="checkContrasena">
+                        <span *ngIf="!formulario.get('userData.checkContrasena').valid && formulario.get('userData.checkContrasena').touched"
+                              class="help-block" style="color: crimson">Las contraseñas no son iguales</span>
+                      </div>
+                      <div class="form-check text-left">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" formControlName="cb" id="cb"/>
+                          <span class="form-check-sign"> </span> Estoy de acuerdo con
+                          <a href="javascript:void(0)"> termos y condiciones </a> .
+                        </label>
+                      </div>
+                    </div>
+                    <p></p>
+                    <div class="row">
+                      <p></p>
+                      <div class="col-md-6 text-center">
+                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">Empezar</button>
+                        <span *ngIf="!formulario.valid && formulario.touched"
+                              class="help-block">Datos del Formulario NO Validos!</span>
+                      </div>
+                      <div class="col-md-6 text-center">
+                        <button type="submit" class="btn btn-warning btn-block" (click)="btnCancel()">Cancelar</button>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                </form>
+                <!--form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                  <div class="input-group" [ngClass]="{ 'input-group-focus': focus === true }">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="tim-icons icon-single-02"> </i>
+                      </div>
+                    </div>
+                    <input
+                      class="form-control"
+                      placeholder="Nombre"
+                      type="text"
+                      formControlName="nombre"
+                      (focus)="focus = true"
+                      (blur)="focus = false"/>
+                  </div>
+                  <div class="input-group" [ngClass]="{ 'input-group-focus': focus === true }">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="tim-icons icon-alert-circle-exc"> </i>
+                      </div>
+                    </div>
+                    <input
+                            class="form-control"
+                            placeholder="Apellido"
+                            type="text"
+                            formControlName="apellido"
+                            (focus)="focus = true"
+                            (blur)="focus = false"/>
+                  </div>
+                  <div class="input-group" [ngClass]="{ 'input-group-focus': focus1 === true }">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="tim-icons icon-email-85"> </i>
+                      </div>
+                    </div>
+                    <input
+                      class="form-control"
+                      placeholder="Email"
+                      type="text"
+                      formControlName="email"
+                      (focus)="focus1 = true"
+                      (blur)="focus1 = false"
+                    />
+                  </div>
+                  <div class="input-group"[ngClass]="{ 'input-group-focus': focus2 === true }">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="tim-icons icon-lock-circle"> </i>
+                      </div>
+                    </div>
+                    <input
+                      class="form-control"
+                      placeholder="Contraseña"
+                      type="text"
+                      formControlName="contrasena"
+                      (focus)="focus2 = true"
+                      (blur)="focus2 = false"
+                    />
+                  </div>
+                  <div class="form-check text-left">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" />
+                      <span class="form-check-sign"> </span> Estoy de acuerdo con
+                      <a href="javascript:void(0)"> termos y condiciones </a> .
+                    </label>
+                  </div>
+                </form-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="register-bg"></div>
+        <div class="square square-1" id="square1"></div>
+        <div class="square square-2" id="square2"></div>
+        <div class="square square-3" id="square3"></div>
+        <div class="square square-4" id="square4"></div>
+        <div class="square square-5" id="square5"></div>
+        <div class="square square-6" id="square6"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path3.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-sm-1">
+                            <h3>Id: <span style="color: #d92161"> {{usuario.id}}</span> </h3>
+                        </div>
+                        <div class="col-sm-5">
+                            <h3> Nombre: <span style="color: #d92161">{{usuario.nombre}}</span> </h3>
+                        </div>
+                        <div class="col-sm-5">
+                            <h3> Correo: <span style="color: #d92161">{{usuario.email}} </span> </h3>
+                        </div>
+                        <div class="col-sm-3">
+                            <h3> Tipo cuenta: <span style="color: #d92161"> {{usuario.tipo}} </span></h3>
+                        </div>
+                    </div>
+                    <div class="col-xl-12"> <br> </div>
+                </div>
+                <p> </p>
+
+                    <!--div class="info info-horizontal">
+                        <div class="icon icon-danger">
+                            <i class="tim-icons icon-square-pin"> </i>
+                        </div>
+                        <div class="description">
+                            <h4 class="info-title">Viviendas</h4>
+                        </div>
+                    </div-->
+                <div class="mt-2 col-lg-12"><p> </p><br><p></p></div>
+
+                <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                    <div class="card card-coin card-plain">
+                        <div class="card-header">
+                            <img class="img-center img-fluid rounded-circle" src="assets/img/home.png"/>
+                            <!--h4 class="title">Viviendas</h4-->
+                        </div>
+                        <div class="card-body">
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Viviendas">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="vivienda-table">
+                                            <thead class="text-danger">
+                                            <tr class="text-center">
+                                                <th class="header">Id</th>
+                                                <th class="header">Nombre</th>
+                                                <th class="header">Pais</th>
+                                                <th class="header">Ciudad</th>
+                                                <th class="header">Ubicación</th>
+                                                <th class="header">Codigo Postal</th>
+                                                <th class="header">Editar</th>
+                                                <th class="header">borrar</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="text-center" *ngFor="let vivienda of viviendaArray">
+                                                    <td>{{ vivienda.id }}</td>
+                                                    <td>{{ vivienda.nombreVivienda }}</td>
+                                                    <td>{{ vivienda.pais }}</td>
+                                                    <td>{{ vivienda.ciudad }}</td>
+                                                    <td>{{ vivienda.ubicacion }}</td>
+                                                    <td>{{ vivienda.codigoPostal }}</td>
+                                                    <td>
+                                                        <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditarVivienda(vivienda.id)">
+                                                            Editar
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrarVivienda(vivienda.nombreVivienda)">
+                                                            Borrar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                                <tab heading="Habitaciones">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="habitacion-table">
+                                            <thead class="text-danger">
+                                            <tr class="text-center">
+                                                <th class="header">Id</th>
+                                                <th class="header">Nombre Vivienda</th>
+                                                <th class="header">Nombre Habitacion</th>
+                                                <th class="header">Serial Equipo</th>
+                                                <th class="header">Editar</th>
+                                                <th class="header">borrar</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let habitacion of habitacionArray">
+                                                <td>{{ habitacion.id }}</td>
+                                                <td>{{ habitacion.nombreVivienda }}</td>
+                                                <td>{{ habitacion.nombreHabitacion }}</td>
+                                                <td>{{ habitacion.serialNumber }}</td>
+                                                <td>
+                                                    <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditarHabitacion(habitacion.nombreHabitacion)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrarHabitacion(habitacion.nombreHabitacion)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                                <tab heading="Info Equipos">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="infoEquipos-table">
+                                            <thead class="text-danger">
+                                            <tr class="text-center">
+                                                <th class="header">Id</th>
+                                                <th class="header">Numero Serial</th>
+                                                <th class="header">Nombre Equipo</th>
+                                                <th class="header">Descripcion</th>
+                                                <th class="header">Ultima Comunicacion</th>
+                                                <th class="header">Editar</th>
+                                                <th class="header">borrar</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let equipo of infoEquipoArray">
+                                                <td>{{ equipo.id }}</td>
+                                                <td>{{ equipo.serialNumber }}</td>
+                                                <td>{{ equipo.nombreEquipo }}</td>
+                                                <td>{{ equipo.descripcion }}</td>
+                                                <td>{{ equipo.lastConn }}</td>
+                                                <td>
+                                                    <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditarEquipo(equipo.serialNumber)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrarHabitacion(habitacion.nombreHabitacion)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div> <!-- DIV CARD BODY -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="col-md-12">
+            <p>* para añadir viviendas, habitaciones y equipos navegue hasta la pagina deseada</p>
+        </div>
+    </section>
+</div>
+

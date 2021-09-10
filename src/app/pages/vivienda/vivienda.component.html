@@ -1,0 +1,230 @@
+<!--div *ngIf="auth.isLoggedIn()" class="wrapper"-->
+<div class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path1.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                    </div>
+                </div>
+                <div class="row top30">
+                    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                        <div class="card card-coin card-plain">
+                            <div class="card-header">
+                                <img class="img-center img-fluid rounded-circle" src="assets/img/logo_01.png"/>
+                                <!--h4 class="title">Viviendas</h4-->
+                            </div>
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Viviendas">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="vivienda-table">
+                                            <thead class="text-danger">
+                                                <tr class="text-center">
+                                                    <th>id</th>
+                                                    <th>Nombre Vivienda</th>
+                                                    <th> @ Cliente</th>
+                                                    <th>Pais</th>
+                                                    <th>Ciudad</th>
+                                                    <th>Ubicacion</th>
+                                                    <th>Codigo Postal</th>
+                                                    <th>Editar</th>
+                                                    <th>Detalles</th>
+                                                    <th>Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let vivienda of viviendaArray">
+                                                <td> {{ vivienda.id }} </td>
+                                                <td> {{ vivienda.nombreVivienda }} </td>
+                                                <td> {{ vivienda.emailCliente }} </td>
+                                                <td> {{ vivienda.pais }} </td>
+                                                <td> {{ vivienda.ciudad }} </td>
+                                                <td> {{ vivienda.ubicacion }} </td>
+                                                <td> {{ vivienda.codigoPostal }} </td>
+                                                <td>
+                                                    <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditar(vivienda.id)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnDetalles" type="submit" class="btn btn-simple btn-warning btn-sm" (click)="btnDetalles(vivienda.nombreVivienda)">
+                                                        Detalles
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrar(vivienda.nombreVivienda)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                    <!----------------------------MOSTRA Viviendas -------------------------------!-->
+                </div>
+                <div class="col-md-4 text-center">
+                    <button *ngIf="!submit" type="submit" class="btn btn-success btn-lg btn-block" (click)="btnAnadirVivienda()">
+                        Añadir nueva vivienda
+                    </button>
+                </div>
+
+                <hr>
+
+                <div class="row justify-content-center" *ngIf="submit" >
+                    <div class="col-md-8">
+                            <span *ngIf="creat">
+                                <div class="card card-plain">
+                                    <div class="card-header">
+                                        <h1 class="profile-title text-left">Añadir Vivienda</h1>
+                                        <h5 class="text-on-back">Añadir</h5>
+                                    </div>
+                                </div>
+                            </span>
+                        <span *ngIf="!creat" >
+                                <!--img src="assets/img/edit.gif" width="150" height="120" /-->
+                                <div class="card card-plain">
+                                    <div class="card-header">
+                                        <h1 class="profile-title text-left">Editar Vivienda</h1>
+                                        <h5 class="text-on-back">Editar</h5>
+                                    </div>
+                                </div>
+                            </span>
+
+                        <hr>
+                        <form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                            <div formGroupName="viviendaData">
+                                <div class="form-row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="id">Id</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="id"
+                                                   formControlName="id"
+                                                   placeholder="Id es automatico"
+                                                   [(ngModel)]="vivienda.id"
+                                                   [readonly]="true">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label *ngIf="!creat" style="color: #ffffff" for="nombreVivienda">Nombre de la Vivienda*</label>
+                                            <input *ngIf="!creat" class="form-control"
+                                                   type="text"
+                                                   id="nombreVivienda"
+                                                   formControlName="nombreVivienda"
+                                                   placeholder="Añadir un nombre para la vivienda"
+                                                   [(ngModel)]="vivienda.nombreVivienda"
+                                                   [readonly]="true">
+                                            <label *ngIf="creat" style="color: #ffffff" for="nombreVivienda2">Nombre de la Vivienda*</label>
+                                            <input *ngIf="creat" class="form-control"
+                                                   type="text"
+                                                   id="nombreVivienda2"
+                                                   formControlName="nombreVivienda"
+                                                   placeholder="Añadir un nombre para la vivienda"
+                                                   [(ngModel)]="vivienda.nombreVivienda">
+                                            <span *ngIf="!formulario.get('viviendaData.nombreVivienda').valid && formulario.get('viviendaData.nombreVivienda').touched"
+                                                  class="help-block" style="color: crimson">Necesario nombre de la vivienda!</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="emailCliente">Email Cliente*</label>
+                                            <input  class="form-control"
+                                                    type="text"
+                                                    id="emailCliente"
+                                                    formControlName="emailCliente"
+                                                    placeholder="E-mail Cliente"
+                                                    [(ngModel)]="vivienda.emailCliente">
+                                            <span *ngIf="!formulario.get('viviendaData.emailCliente').valid && formulario.get('viviendaData.emailCliente').touched"
+                                                  class="help-block" style="color: crimson">Necesario email valido!</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="pais">Pais</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="pais"
+                                                   formControlName="pais"
+                                                   placeholder="Digite un pais"
+                                                   [(ngModel)]="vivienda.pais">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="ciudad">Ciudad</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="ciudad"
+                                                   formControlName="ciudad"
+                                                   placeholder="Digite la ciudad de la vivienda"
+                                                   [(ngModel)]="vivienda.ciudad">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="ubicacion">Ubicacion</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="ubicacion"
+                                                   formControlName="ubicacion"
+                                                   placeholder="Digite la ubicacion de la vivienda"
+                                                   [(ngModel)]="vivienda.ubicacion">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="codigoPostal">Codigo Postal</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="codigoPostal"
+                                                   formControlName="codigoPostal"
+                                                   placeholder="Digite un codigo Postal"
+                                                   [(ngModel)]="vivienda.codigoPostal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">Grabar datos</button>
+                                            <span *ngIf="!formulario.valid && formulario.touched"
+                                                  class="help-block">Datos del Formulario NO Validos!</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            <button type="submit" class="btn btn-warning btn-block" (click)="reload()">Cancelar</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            <div *ngIf="!auth.isLoggedIn()" >
+                <div class="alert alert-danger" role="alert">
+                    <h4>Para editar equipos és necesario una sesión >>>  <a href="/home" class="alert-link">Vale!</a></h4>
+                </div>
+            </div>
+        </div>
+
+        </section>
+    </section>
+</div>
+

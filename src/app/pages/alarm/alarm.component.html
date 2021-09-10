@@ -1,0 +1,54 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path5.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                    </div>
+                </div>
+                <div class="row top30">
+                    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                        <div class="card card-coin card-plain">
+                            <div class="card-header">
+                                <img class="img-center img-fluid rounded-circle" src="assets/img/logo_02.png"/>
+                            </div>
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Alarmas">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="equipos-table">
+                                            <thead class="text-danger">
+                                            <tr class="text-center">
+                                                <th>id</th>
+                                                <th>@ Cliente</th>
+                                                <th>Numero Serial</th>
+                                                <th>Alarma</th>
+                                                <th>Borrar</th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let alarm of infoAlarmArray">
+                                                <td> {{ alarm.id }} </td>
+                                                <td> {{ alarm.emailCliente }} </td>
+                                                <td> {{ alarm.serialNumber }} </td>
+                                                <td> {{ alarm.dataTime }} </td>
+
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrar(alarm.serialNumber)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+                <hr>

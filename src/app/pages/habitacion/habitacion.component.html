@@ -1,0 +1,193 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path3.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-5 align-middle">
+                                <h4>Id: <span style="color: #d92161"> {{vivienda.id}}</span> </h4>
+                            </div>
+                            <div class="pull-right">
+                                <h4>Pais: <span style="color: #d92161"> {{vivienda.pais}} , </span>
+                                    Ciudad: <span style="color: #d92161"> {{vivienda.ciudad}}</span> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-5 align-middle">
+                                <h4> Nombre Vivienda: <span style="color: #d92161">{{nombreVivienda}}</span> </h4>
+                            </div>
+                            <div class="pull-right">
+                                <h4> Cliente: <span style="color: #d92161">{{vivienda.emailCliente}}</span> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <h4> Ubicacion: <span style="color: #d92161">{{vivienda.ubicacion}}</span> </h4>
+                            </div>
+                            <div class="pull-right">
+                                <h4> codigo Postal: <span style="color: #d92161">{{vivienda.codigoPostal}}</span> </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p> </p>
+                <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                    <div class="card card-coin card-plain">
+                        <div class="card-header">
+                            <img class="img-center img-fluid rounded-circle" src="assets/img/home.png"/>
+                        </div>
+                        <div class="card-body">
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Habitaciones">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="habitacion-table">
+                                            <thead class="text-danger">
+                                                <tr class="text-center">
+                                                    <th class="header">Id</th>
+                                                    <th class="header">Nombre Vivienda</th>
+                                                    <th class="header">Nombre Habitacion</th>
+                                                    <th class="header">Equipo instalado</th>
+                                                    <th class="header">Editar</th>
+                                                    <th class="header">borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="text-center" *ngFor="let habitacion of habitacionArray">
+                                                    <td>{{ habitacion.id }}</td>
+                                                    <td>{{ habitacion.nombreVivienda }}</td>
+                                                    <td>{{ habitacion.nombreHabitacion }}</td>
+                                                    <td>{{ habitacion.serialNumber }}</td>
+                                                    <td>
+                                                        <button name="btnEditar" type="submit" class="btn btn-simple btn-light btn-sm" (click)="btnEditarHabitacion(habitacion.nombreHabitacion)">
+                                                            Editar
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrarHabitacion(habitacion.nombreHabitacion)">
+                                                            Borrar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <button *ngIf="!submit" type="submit" class="btn btn-success btn-lg btn-block" (click)="btnAnadirHabitacion()">
+                        Añadir nueva Habitacion
+                    </button>
+                </div>
+            <hr>
+            <section class="section">
+                <div class="row justify-content-center" *ngIf="submit" >
+                    <div class="col-md-8">
+                        <span *ngIf="creat">
+                            <div class="card card-plain">
+                                <div class="card-header">
+                                    <h1 class="profile-title text-left">Añadir habitacion</h1>
+                                    <h5 class="text-on-back">Añadir</h5>
+                                </div>
+                            </div>
+                        </span>
+                        <span *ngIf="!creat" >
+                            <div class="card card-plain">
+                                <div class="card-header">
+                                    <h1 class="profile-title text-left">Editar habitacion</h1>
+                                    <h5 class="text-on-back">Editar</h5>
+                                </div>
+                            </div>
+                        </span>
+                        <hr>
+                        <form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                            <div formGroupName="habitacionData">
+                                <div class="form-row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff;" for="id">Id</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="id"
+                                                   formControlName="id"
+                                                   placeholder="Automatico"
+                                                   [(ngModel)]="habitacion.id"
+                                                   [readonly]="true">
+                                            <span *ngIf="!formulario.get('habitacionData.id').valid && formulario.get('habitacionData.id').touched"
+                                                  class="help-block" style="color: crimson">Id es Automatico!</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="nombreVivienda">Nombre Vivienda</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="nombreVivienda"
+                                                   formControlName="nombreVivienda"
+                                                   placeholder="{{vivienda.nombreVivienda}}"
+                                                   [(ngModel)]="vivienda.nombreVivienda"
+                                                   [readonly]="true">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="nombreHabitacion">Nombre Habitacion*</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="nombreHabitacion"
+                                                   formControlName="nombreHabitacion"
+                                                   placeholder="Añadir nombre habitacion"
+                                                   [(ngModel)]="habitacion.nombreHabitacion">
+                                            <span *ngIf="!formulario.get('habitacionData.nombreHabitacion').valid &&
+                                             formulario.get('habitacionData.nombreHabitacion').touched"
+                                                  class="help-block" style="color: crimson">Obligatório un nombre de habitación!</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label style="color: #ffffff" for="serialNumber">Numero Serial</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   id="serialNumber"
+                                                   formControlName="serialNumber"
+                                                   placeholder="Añadir Numero del Equipo"
+                                                   [(ngModel)]="habitacion.serialNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">Grabar datos</button>
+                                        <span *ngIf="!formulario.valid && formulario.touched"
+                                              class="help-block">Datos del Formulario NO Validos!</span>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-warning btn-block" (click)="reload()">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            </div>
+        </section>
+    </section>
+</div>

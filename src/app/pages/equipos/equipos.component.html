@@ -1,0 +1,185 @@
+<div *ngIf="auth.isLoggedIn()" class="wrapper">
+    <section class="section section-lg">
+        <section class="section">
+            <img class="path" src="assets/img/path5.png" />
+            <div class="container">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p2">
+                        <button name="btnVolver" type="submit" class="btn btn-simple btn-danger" onclick="history.back()">
+                            <i class="tim-icons icon-double-left"> </i> Volver
+                        </button>
+                        <span *ngIf="submit">
+                         <button name="btnVolver" type="submit" class="btn btn-simple btn-warning" (click)="btnCancel()">
+                            <i class="tim-icons icon-simple-remove"> </i> Cancelar
+                        </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row top30">
+                    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+                        <div class="card card-coin card-plain">
+                            <div class="card-header">
+                                <img class="img-center img-fluid rounded-circle" src="assets/img/logo_01.png"/>
+                            </div>
+                            <tabset class="nav-tabs-danger justify-content-center tab-subcategories">
+                                <tab heading="Equipos">
+                                    <div class="table-responsive-xl">
+                                        <table class="table tablesorter" id="equipos-table">
+                                            <thead class="text-danger">
+                                                <tr class="text-center">
+                                                    <th>id</th>
+                                                    <th>Numero Serial</th>
+                                                    <th>Nombre del Equipo</th>
+                                                    <th>Descripcion</th>
+                                                    <th>@ Cliente</th>
+                                                    <th>Ultima Comunicación</th>
+                                                    <th>Editar</th>
+                                                    <th>Borrar</th>
+                                                    <th>Detalles</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center" *ngFor="let device of equipoArray">
+                                                <td> {{ device.id }} </td>
+                                                <td> {{ device.serialNumber }} </td>
+                                                <td> {{ device.nombreEquipo }} </td>
+                                                <td> {{ device.descripcion }} </td>
+                                                <td> {{ device.emailCliente }} </td>
+                                                <td> {{ device.lastConn }} </td>
+                                                <td>
+                                                    <button name="btnEditar" type="submit" class="btn btn-simple btn-success btn-sm" (click)="btnEditar(device.serialNumber)">
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnDetalles" type="submit" class="btn btn-simple btn-warning btn-sm" (click)="btnDetalles(device.serialNumber, device.descripcion)">
+                                                        Detalles
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button name="btnBorrar" type="submit" class="btn btn-simple btn-danger btn-sm" (click)="btnBorrar(device.serialNumber)">
+                                                        Borrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <section class="section">
+                    <div class="row justify-content-center" *ngIf="submit" >
+                        <div class="col-md-8">
+                            <div class="card card-plain">
+                                <div class="card-header">
+                                    <h1 class="profile-title text-left">Editar equipo</h1>
+                                    <h5 class="text-on-back">Editar</h5>
+                                </div>
+                            </div>
+                            <hr>
+                            <form [formGroup]="formulario" (ngSubmit)="onSubmitCreat()" #f=ngForm>
+                                <div formGroupName="equipoData">
+                                    <div class="form-row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="id">Id</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="id"
+                                                       formControlName="id"
+                                                       placeholder="Id es automático"
+                                                       [(ngModel)]="infoEquipo.id"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('equipoData.id').valid && formulario.get('equipoData.id').touched"
+                                                      class="help-block" style="color: crimson">Id debe ser automatico</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="serialNumber">Numero Serial</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="serialNumber"
+                                                       formControlName="serialNumber"
+                                                       placeholder="Serial Number es automatico"
+                                                       [(ngModel)]="infoEquipo.serialNumber"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('equipoData.serialNumber').valid && formulario.get('equipoData.serialNumber').touched"
+                                                      class="help-block" style="color: crimson">Serial debe ser automatico</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="emailCliente">Correo Electronico</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="emailCliente"
+                                                       formControlName="emailCliente"
+                                                       placeholder="Insira el correo del cliente"
+                                                       [(ngModel)]="infoEquipo.emailCliente">
+                                                <span *ngIf="!formulario.get('equipoData.emailCliente').valid && formulario.get('equipoData.emailCliente').touched"
+                                                      class="help-block" style="color: crimson">Correo del cliente es obligatorio</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="nombreEquipo">Nombre del Equipo</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="nombreEquipo"
+                                                       formControlName="nombreEquipo"
+                                                       placeholder="Insira un nombre para el equipo"
+                                                       [(ngModel)]="infoEquipo.nombreEquipo">
+                                                <span *ngIf="!formulario.get('equipoData.nombreEquipo').valid && formulario.get('equipoData.nombreEquipo').touched"
+                                                      class="help-block" style="color: crimson">Es necesario un nombre del equipo</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="descripcion">Descripcion</label>
+                                                <input class="form-control"
+                                                       type="text"
+                                                       id="descripcion"
+                                                       formControlName="descripcion"
+                                                       placeholder="Insira una descripcion para el equipo"
+                                                       [(ngModel)]="infoEquipo.descripcion"
+                                                       [readonly]="true">
+                                                <span *ngIf="!formulario.get('equipoData.descripcion').valid && formulario.get('equipoData.descripcion').touched"
+                                                      class="help-block" style="color: crimson">Es necesario una descripcion para el equipo</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-primary btn-block" (click)="onSubmitCreat()" [disabled]="!f.valid">Grabar datos</button>
+                                        <span *ngIf="!formulario.valid && formulario.touched"
+                                              class="help-block">Datos del Formulario NO Validos!</span>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-warning btn-block" (click)="btnCancel()">Cancelar</button>
+                                    </div>
+                                </div>
+                                <hr>
+                            </form>
+                    </div>
+            </div>
+        </section>
+                </div>
+
+            <div *ngIf="!auth.isLoggedIn()" >
+                <div class="alert alert-danger" role="alert">
+                    <h4>Para editar equipos és necesario una sesión >>>  <a href="/home" class="alert-link">Vale!</a></h4>
+                </div>
+            </div>
+
+        </section>
+    </section>
+</div>
